@@ -1,69 +1,93 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Success!</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background-color: white;
-            font-family: Arial, sans-serif;
-            overflow: hidden;
-        }
-        img {
-            max-width: 80%;
-            height: auto;
-            border-radius: 10px;
-            margin-bottom: 1rem;
-        }
-        p {
-            font-size: 1.5rem;
-            text-align: center;
-            color: #333;
-        }
-        .confetti {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background-color: #ff69b4;
-            animation: fall 3s linear infinite;
-        }
-        @keyframes fall {
-            0% { transform: translateY(-100vh) rotate(0deg); }
-            100% { transform: translateY(100vh) rotate(360deg); }
-        }
-        @media (max-width: 768px) {
-            img {
-                max-width: 90%;
-            }
-            p {
-                font-size: 1.2rem;
-            }
-        }
-    </style>
+    <title>Happy Valentine ❤️</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <img src="https://via.placeholder.com/400x300?text=Funny+Valentine+Meme" alt="Funny Valentine Meme">
-    <p>You didn't really have a choice</p>
+
+    <div class="container">
+        <div class="media-box">
+            <video id="success-video" playsinline>
+                <source src="assets/video.mp4" type="video/mp4">
+            </video>
+        </div>
+        
+        <div class="message-container" id="msg-box">
+            <div class="typewriter-message" id="zen-message"></div>
+        </div>
+    </div>
+
+    <audio id="bg-music">
+        <source src="assets/song.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
-        // Simple confetti effect
-        function createConfetti() {
-            const confetti = document.createElement('div');
-            confetti.className = 'confetti';
-            confetti.style.left = Math.random() * 100 + 'vw';
-            confetti.style.animationDelay = Math.random() * 3 + 's';
-            document.body.appendChild(confetti);
-            setTimeout(() => confetti.remove(), 3000);
+        const video = document.getElementById('success-video');
+        const music = document.getElementById('bg-music');
+        const msgBox = document.getElementById('msg-box');
+        const pesanZen = "Haloo Sayanggg, Zen bilang Zen bersyukurr bisa kenal sama kamuu. Kadang zen juga masih gk percaya, dari begitu banyak orang di dunia heheheh.\n\nZen bisa punya kesempatan untuk ngobrol sama kamuu, ketawa bareng, main bareng, dan ada beberapa momen yang bikin bahagia bangett hehehe. Mungkin kamu gk sadar, tapi semenjak ada kamu bikin hari hari nya Zen berubah jadi lebih hangat dan indah hehehhe.\n\nMakasih ya sayanggg sudah jadi diri kamu sendiri. Terimakasih udah hadir di hidupnya Zenn. Dan semoga di hari Valentine ini kamu dapat merasakan sayang bukan dari zenn aja yaa, tapi dari semua orang yang peduli dan sayang sama kamuu.\n\nHAPPY VALENTINE 😉 ❤️";
+
+        function typeWriter(text, elementId) {
+            let i = 0;
+            const element = document.getElementById(elementId);
+            function typing() {
+                if (i < text.length) {
+                    // Update innerHTML tanpa memicu pergerakan layar (scrollBy dihapus)
+                    element.innerHTML = text.substring(0, i + 1).replace(/\n/g, "<br>") + '<span class="cursor"></span>';
+                    i++;
+                    setTimeout(typing, 45);
+                }
+            }
+            typing();
         }
-        setInterval(createConfetti, 200);
+
+        window.onload = () => {
+            // Pastikan video tidak mute agar suaranya terdengar
+            video.muted = false;
+            
+            const playPromise = video.play();
+
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    // Autoplay bersuara berhasil
+                })
+                .catch(error => {
+                    // Jika diblokir browser, putar muted dulu sebagai fallback
+                    video.muted = true;
+                    video.play();
+                });
+            }
+
+            // LOGIKA UTAMA: Saat video selesai
+            video.onended = function() {
+                // 1. Putar Lagu
+                music.play();
+                
+                // 2. Munculkan Box Pesan
+                msgBox.style.display = "block";
+                
+                // 3. Jalankan Typewriter
+                typeWriter(pesanZen, "zen-message");
+                
+                // 4. Jalankan Hujan Hati
+                startHearts();
+            };
+        };
+
+        function startHearts() {
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.fontSize = (Math.random() * 20 + 10) + "px";
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 4000);
+            }, 300);
+        }
     </script>
 </body>
 </html>
