@@ -1,106 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Valentine's Proposal</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background-color: white;
-            font-family: Arial, sans-serif;
-            overflow: hidden;
-        }
-        h1 {
-            font-size: 3rem;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 2rem;
-            color: #333;
-        }
-        .buttons {
-            display: flex;
-            gap: 2rem;
-        }
-        button {
-            padding: 1rem 2rem;
-            font-size: 1.5rem;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-        #yes {
-            background-color: #ff69b4;
-            color: white;
-        }
-        #no {
-            background-color: #ccc;
-            color: #333;
-            position: absolute;
-            transition: transform 0.2s ease;
-        }
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
-            }
-            button {
-                padding: 0.8rem 1.5rem;
-                font-size: 1.2rem;
-            }
-            .buttons {
-                gap: 1rem;
-            }
-        }
-    </style>
+    <title>For Ischadenia ❤️</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <h1>Sneha, will you be my Valentine?</h1>
-    <div class="buttons">
-        <button id="yes" onclick="window.location.href='success.html'">Yes</button>
-        <button id="no">No</button>
+<body style="overflow: hidden;"> <div class="container">
+        <div class="media-box">
+            <img src="assets/kengiebengie.gif">
+        </div>
+        
+        <h1 style="color: #d90429;">Ischadenia, will you be my Valentine?</h1>
+        
+        <div class="btn-container">
+            <button id="yes-btn" onclick="location.href='success.html?play=true'">Yes</button>
+            <button id="no-btn">No</button>
+        </div>
     </div>
 
     <script>
-        const noButton = document.getElementById('no');
-        let noButtonRect = noButton.getBoundingClientRect();
-        let isMoving = false;
+        const noBtn = document.getElementById('no-btn');
 
-        function moveNoButton(event) {
-            if (isMoving) return;
-            isMoving = true;
-
-            const mouseX = event.clientX || (event.touches && event.touches[0].clientX);
-            const mouseY = event.clientY || (event.touches && event.touches[0].clientY);
-            const buttonCenterX = noButtonRect.left + noButtonRect.width / 2;
-            const buttonCenterY = noButtonRect.top + noButtonRect.height / 2;
-            const distance = Math.sqrt((mouseX - buttonCenterX) ** 2 + (mouseY - buttonCenterY) ** 2);
-
-            if (distance < 100) { // Trigger distance
-                const speed = Math.max(50, 200 - distance); // Faster when closer
-                const angle = Math.random() * 2 * Math.PI;
-                const newX = Math.max(0, Math.min(window.innerWidth - noButtonRect.width, noButtonRect.left + Math.cos(angle) * speed));
-                const newY = Math.max(0, Math.min(window.innerHeight - noButtonRect.height, noButtonRect.top + Math.sin(angle) * speed));
-
-                noButton.style.transform = `translate(${newX - noButtonRect.left}px, ${newY - noButtonRect.top}px)`;
-                noButtonRect = { left: newX, top: newY, width: noButtonRect.width, height: noButtonRect.height };
-
-                setTimeout(() => {
-                    isMoving = false;
-                }, 200);
-            } else {
-                isMoving = false;
-            }
+        function moveButton() {
+            const margin = 50;
+            const maxX = window.innerWidth - noBtn.offsetWidth - margin;
+            const maxY = window.innerHeight - noBtn.offsetHeight - margin;
+            const randomX = Math.max(margin, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(margin, Math.floor(Math.random() * maxY));
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
         }
 
-        document.addEventListener('mousemove', moveNoButton);
-        document.addEventListener('touchmove', moveNoButton, { passive: true });
+        noBtn.addEventListener('mouseover', moveButton);
+        noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); moveButton(); });
     </script>
 </body>
 </html>
